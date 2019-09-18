@@ -12,15 +12,38 @@
 
 $(document).ready(function() {
 
+  var url = "https://flynn.boolean.careers/exercises/api/array/music";
 
 
 
-  var source   = $("#template").html();
-  var template = Handlebars.compile(source);
+
+  $.ajax ({
+    url : url,
+    method : "GET",
+    success : function (data) {
+      var dischi = data.response;
+
+      for (i=0; i < dischi.length; i++) {
+        var disco = dischi[i];
+        var source   = $("#template").html();
+        var template = Handlebars.compile(source);
+        var context = {
+        poster : disco.poster,
+        title : disco.title,
+        author : disco.author,
+        genre: disco.genre,
+        year: disco.year
+      };
+      var html = template(context);
+      $(".cds-container").append(html);
+    }
+
+    },
+    error : function (){
+      console.log("C'è stato un errore");
+    }
 
 
-  var context = {title: "My New Post", body: "This is my first post!"};
-  var html    = template(context);
-
+  });
 
 });
